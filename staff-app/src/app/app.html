@@ -1,0 +1,32 @@
+<div class="header">
+  <h1>🍔 BURGER KING - STAFF</h1>
+</div>
+
+<div class="container">
+  <div class="col-ordini">
+    <h2>Ordini in Cucina</h2>
+    <div *ngFor="let o of ordini" class="card-ordine">
+      <div class="card-header">
+        <strong>ORDINE #{{o.id}}</strong>
+        <span class="stato">{{o.stato}}</span>
+      </div>
+      <p><strong>Articoli:</strong> {{o.dettagli}}</p>
+      <p><strong>Totale:</strong> {{o.totale}}€</p>
+    </div>
+  </div>
+
+  <div class="col-menu">
+    <h2>Aggiungi Prodotto</h2>
+    <div class="form-group">
+      <input [(ngModel)]="nuovoProdotto.nome" placeholder="Nome Panino">
+      <input [(ngModel)]="nuovoProdotto.prezzo" type="number" placeholder="Prezzo (€)">
+      <select [(ngModel)]="nuovoProdotto.categoria">
+        <option value="panini">Panini</option>
+        <option value="bevande">Bevande</option>
+        <option value="menu">Menù</option>
+      </select>
+      <input [(ngModel)]="nuovoProdotto.immagine" placeholder="URL Immagine">
+      <button (click)="aggiungiProdotto()">SALVA NEL DATABASE</button>
+    </div>
+  </div>
+</div>

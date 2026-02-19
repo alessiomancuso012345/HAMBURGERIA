@@ -1,0 +1,25 @@
+name: totem_app
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.0.0 # Abbassato leggermente per massima compatibilità con i build tools
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  http: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  # AGGIUNGI QUESTE DUE RIGHE SOTTO:
+  build_runner: ^2.4.0
+  build_web_compilers: ^4.0.0
+
+flutter:
+  uses-material-design: true

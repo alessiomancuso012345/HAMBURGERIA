@@ -1,0 +1,42 @@
+/* Colori ufficiali BK */
+:root {
+  --bk-red: #d62308;
+  --bk-brown: #502314;
+  --bk-orange: #faaf18;
+  --bk-cream: #f5ebdc;
+}
+
+body { 
+  background-color: var(--bk-cream); 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  margin: 0; 
+  color: var(--bk-brown);
+}
+
+.header {
+  background-color: var(--bk-brown);
+  padding: 20px;
+  text-align: center;
+  border-bottom: 5px solid var(--bk-orange);
+}
+
+.header h1 { color: var(--bk-orange); margin: 0; }
+
+.card-ordine {
+  background: white;
+  border: 2px solid var(--bk-brown);
+  border-radius: 15px;
+  margin: 15px;
+  padding: 15px;
+  box-shadow: 5px 5px 0px var(--bk-red);
+}
+
+button {
+  background-color: var(--bk-red);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
