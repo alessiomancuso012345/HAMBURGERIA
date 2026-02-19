@@ -18,15 +18,64 @@
   <div class="col-menu">
     <h2>Aggiungi Prodotto</h2>
     <div class="form-group">
-      <input [(ngModel)]="nuovoProdotto.nome" placeholder="Nome Panino">
-      <input [(ngModel)]="nuovoProdotto.prezzo" type="number" placeholder="Prezzo (€)">
-      <select [(ngModel)]="nuovoProdotto.categoria">
+      <label for="nome">Nome Panino</label>
+      <input id="nome" [(ngModel)]="nuovoProdotto.nome" placeholder="Nome Panino">
+      
+      <label for="prezzo">Prezzo (€)</label>
+      <input id="prezzo" [(ngModel)]="nuovoProdotto.prezzo" type="number" placeholder="Prezzo (€)">
+      
+      <label for="categoria">Categoria</label>
+      <select id="categoria" [(ngModel)]="nuovoProdotto.categoria">
         <option value="panini">Panini</option>
         <option value="bevande">Bevande</option>
         <option value="menu">Menù</option>
       </select>
-      <input [(ngModel)]="nuovoProdotto.immagine" placeholder="URL Immagine">
+      
+      <label for="descrizione">Descrizione Panino</label>
+      <textarea 
+        id="descrizione"
+        [(ngModel)]="nuovoProdotto.descrizione" 
+        name="descrizione" 
+        class="form-control" 
+        placeholder="Es: Carne alla griglia, pomodoro, cipolla e salsa speciale...">
+      </textarea>
+      
+      <label for="immagine">URL Immagine</label>
+      <input id="immagine" [(ngModel)]="nuovoProdotto.immagine" placeholder="URL Immagine">
+      
       <button (click)="aggiungiProdotto()">SALVA NEL DATABASE</button>
     </div>
   </div>
+
+  <div class="col-gestione">
+    <h2>Gestione Prodotti</h2>
+    <div class="tabs">
+      <button [class.active]="categoriaSelezionata === 'tutti'" (click)="categoriaSelezionata = 'tutti'">Tutti</button>
+      <button [class.active]="categoriaSelezionata === 'panini'" (click)="categoriaSelezionata = 'panini'">Panini</button>
+      <button [class.active]="categoriaSelezionata === 'bevande'" (click)="categoriaSelezionata = 'bevande'">Bevande</button>
+      <button [class.active]="categoriaSelezionata === 'menu'" (click)="categoriaSelezionata = 'menu'">Menù</button>
+    </div>
+    <div class="prodotti-lista">
+      <div *ngFor="let p of filtraProdotti()" class="card-prodotto">
+        <img [src]="p.immagine" alt="{{p.nome}}" class="prodotto-img">
+        <div class="prodotto-info">
+          <h3>{{p.nome}}</h3>
+          <p>{{p.descrizione}}</p>
+          <p><strong>€{{p.prezzo}}</strong></p>
+          <button class="elimina-btn" (click)="eliminaProdotto(p.id)">ELIMINA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ordini-container">
+  <div *ngFor="let ordine of ordini" class="ordine-card" style="border: 2px solid #502314; margin-bottom: 10px; padding: 15px; border-radius: 10px; background: #fff;">
+    <h3 style="margin: 0;">Ordine #{{ ordine.id }} - Totale: {{ ordine.totale }}€</h3>
+    <p style="font-size: 18px; background: #f8f8f8; padding: 10px; color: #333;">
+      <strong>Dettagli:</strong> {{ ordine.dettagli }}
+    </p>
+    <button (click)="completaOrdine(ordine.id)" style="background: green; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+      ✅ ORDINE COMPLETATO
+    </button>
+  </div>
+</div>
 </div>
