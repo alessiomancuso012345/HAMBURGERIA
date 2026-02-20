@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   prodotti: any[] = [];
   categoriaSelezionata: string = 'tutti';
   nuovoProdotto = { nome: '', prezzo: 0, categoria: 'panini', immagine: '', descrizione: '' };
+  mostraInformazioni: boolean = false;
   // Questa riga capisce da sola l'indirizzo del tuo Codespace
   apiUrl = window.location.protocol + '//' + window.location.hostname.replace('4200', '5000');
 
