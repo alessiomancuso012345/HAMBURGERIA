@@ -459,6 +459,13 @@ section:hover {
   background: var(--bg-secondary);
   padding: 0 2rem;
   border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-btn {
@@ -474,7 +481,8 @@ section:hover {
 }
 
 .tab-btn.active {
-  color: var(--primary-color);
+  color: var(--text-light);
+  background: var(--primary-color);
 }
 
 .tab-btn.active::after {
@@ -725,6 +733,18 @@ section:hover {
 
   .products-grid {
     grid-template-columns: 1fr;
+  }
+
+  .category-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 1rem;
+  }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
   }
 
   .footer-content {
