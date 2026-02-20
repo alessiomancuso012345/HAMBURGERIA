@@ -50,33 +50,71 @@ export class AppComponent implements OnInit {
       });
     }
   }
-  // Assicurati che l'URL sia quello della tua porta 5000 (Backend)
-  apiUrlOrdini = 'https://organic-rotary-phone-pjv5vvrwjjjg3764w-5000.app.github.dev/ordini';
 
   // Funzione per eliminare l'ordine (Segna come completato)
   completaOrdine(id: number) {
     if(confirm("Vuoi segnare l'ordine #" + id + " come completato?")) {
-      this.http.delete(`${this.apiUrlOrdini}/${id}`).subscribe({
+      this.http.delete(`${this.apiUrl}/ordini/${id}`).subscribe({
         next: () => {
           console.log("Ordine eliminato");
-          this.caricaOrdini(); // Riesegue la GET per aggiornare la lista
+          this.caricaDati(); // Riesegue la GET per aggiornare la lista
         },
         error: (err) => console.error("Errore durante l'eliminazione", err)
       });
     }
   }
+  // Funzione per ottenere l'ora corrente
+  getCurrentTime(): string {
+    const now = new Date();
+    const hour = now.getHours();
 
-  // Funzione per caricare gli ordini (da chiamare nel ngOnInit)
-  caricaOrdini() {
-    this.http.get<any[]>(this.apiUrlOrdini).subscribe(data => {
-      this.ordini = data;
+    let periodo = '';
+    if (hour >= 6 && hour < 12) {
+      periodo = 'Mattina';
+    } else if (hour >= 12 && hour < 18) {
+      periodo = 'Pomeriggio';
+    } else if (hour >= 18 && hour < 22) {
+      periodo = 'Sera';
+    } else {
+      periodo = 'Notte';
+    }
+
+    const oraFormattata = now.toLocaleTimeString('it-IT', {
+      hour: '2-digit'
+    });
+
+    return `Orario: ${oraFormattata} ${periodo}`;
+  }
+
+  // Funzione per ottenere la data corrente
+  getCurrentDate(): string {
+    const now = new Date();
+    const giorno = now.getDate().toString().padStart(2, '0');
+    const mese = (now.getMonth() + 1).toString().padStart(2, '0');
+    const anno = now.getFullYear();
+
+    return `Giorno: ${giorno}/${mese}/${anno}`;
+  }
+
+  aggiungiProdotto() {
+    if (this.nuovoProdotto.prezzo < 1) {
+      alert("Il prezzo deve essere almeno 1€");
+      return;
+    }
+    this.http.post(`${this.apiUrl}/prodotti`, this.nuovoProdotto).subscribe({
+      next: () => {
+        alert("Prodotto aggiunto con successo al menu!");
+        this.nuovoProdotto = { nome: '', prezzo: 0, categoria: 'panini', immagine: '', descrizione: '' };
+        this.caricaProdotti();
+      },
+      error: (err: any) => {
+        alert("Errore: " + (err.error?.errore || "Errore sconosciuto"));
+      }
     });
   }
-  aggiungiProdotto() {
-    this.http.post(`${this.apiUrl}/prodotti`, this.nuovoProdotto).subscribe(() => {
-      alert("Prodotto aggiunto con successo al menu!");
-      this.nuovoProdotto = { nome: '', prezzo: 0, categoria: 'panini', immagine: '', descrizione: '' };
-      this.caricaProdotti();
-    });
+
+  // Funzione per formattare i prezzi con 2 decimali
+  formattaPrezzo(prezzo: number): string {
+    return prezzo.toFixed(2);
   }
 }

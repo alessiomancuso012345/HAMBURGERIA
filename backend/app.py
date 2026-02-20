@@ -43,6 +43,10 @@ def gestisci_prodotti(id_prodotto=None):
             immagine = dati.get('immagine', '')
             descrizione = dati.get('descrizione', '') # Nuovo campo!
 
+            # Validazione prezzo
+            if prezzo < 1:
+                return jsonify({"errore": "Il prezzo deve essere almeno 1"}), 400
+
             # Salvataggio nel database
             db.aggiungi_prodotto(nome, prezzo, categoria, immagine, descrizione)
             
@@ -85,11 +89,6 @@ def gestisci_ordini():
     # GET: Restituisce lo storico degli ordini per la cucina
     return jsonify(db.get_ordini())
 
-if __name__ == '__main__':
-    # Avvio del server sulla porta 5000
-    # Debug=True permette di vedere le modifiche al codice senza riavviare manualmente
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
 @app.route('/ordini/<int:id>', methods=['DELETE', 'OPTIONS'])
 def elimina_ordine(id):
     if request.method == 'OPTIONS':
@@ -99,3 +98,8 @@ def elimina_ordine(id):
         return jsonify({"messaggio": "Ordine rimosso correttamente"}), 200
     except Exception as e:
         return jsonify({"errore": str(e)}), 500
+
+if __name__ == '__main__':
+    # Avvio del server sulla porta 5000
+    # Debug=True permette di vedere le modifiche al codice senza riavviare manualmente
+    app.run(host='0.0.0.0', port=5000, debug=True)

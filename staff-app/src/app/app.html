@@ -1,81 +1,254 @@
-<div class="header">
-  <h1>🍔 BURGER KING - STAFF</h1>
-</div>
-
-<div class="container">
-  <div class="col-ordini">
-    <h2>Ordini in Cucina</h2>
-    <div *ngFor="let o of ordini" class="card-ordine">
-      <div class="card-header">
-        <strong>ORDINE #{{o.id}}</strong>
-        <span class="stato">{{o.stato}}</span>
+<div class="app-container">
+  <!-- Header Professionale -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo">
+          <span class="logo-icon">🍔</span>
+          <div class="logo-text">
+            <h1>BURGER KING</h1>
+            <span class="subtitle">Staff Management System</span>
+          </div>
+        </div>
       </div>
-      <p><strong>Articoli:</strong> {{o.dettagli}}</p>
-      <p><strong>Totale:</strong> {{o.totale}}€</p>
-    </div>
-  </div>
-
-  <div class="col-menu">
-    <h2>Aggiungi Prodotto</h2>
-    <div class="form-group">
-      <label for="nome">Nome Panino</label>
-      <input id="nome" [(ngModel)]="nuovoProdotto.nome" placeholder="Nome Panino">
-      
-      <label for="prezzo">Prezzo (€)</label>
-      <input id="prezzo" [(ngModel)]="nuovoProdotto.prezzo" type="number" placeholder="Prezzo (€)">
-      
-      <label for="categoria">Categoria</label>
-      <select id="categoria" [(ngModel)]="nuovoProdotto.categoria">
-        <option value="panini">Panini</option>
-        <option value="bevande">Bevande</option>
-        <option value="menu">Menù</option>
-      </select>
-      
-      <label for="descrizione">Descrizione Panino</label>
-      <textarea 
-        id="descrizione"
-        [(ngModel)]="nuovoProdotto.descrizione" 
-        name="descrizione" 
-        class="form-control" 
-        placeholder="Es: Carne alla griglia, pomodoro, cipolla e salsa speciale...">
-      </textarea>
-      
-      <label for="immagine">URL Immagine</label>
-      <input id="immagine" [(ngModel)]="nuovoProdotto.immagine" placeholder="URL Immagine">
-      
-      <button (click)="aggiungiProdotto()">SALVA NEL DATABASE</button>
-    </div>
-  </div>
-
-  <div class="col-gestione">
-    <h2>Gestione Prodotti</h2>
-    <div class="tabs">
-      <button [class.active]="categoriaSelezionata === 'tutti'" (click)="categoriaSelezionata = 'tutti'">Tutti</button>
-      <button [class.active]="categoriaSelezionata === 'panini'" (click)="categoriaSelezionata = 'panini'">Panini</button>
-      <button [class.active]="categoriaSelezionata === 'bevande'" (click)="categoriaSelezionata = 'bevande'">Bevande</button>
-      <button [class.active]="categoriaSelezionata === 'menu'" (click)="categoriaSelezionata = 'menu'">Menù</button>
-    </div>
-    <div class="prodotti-lista">
-      <div *ngFor="let p of filtraProdotti()" class="card-prodotto">
-        <img [src]="p.immagine" alt="{{p.nome}}" class="prodotto-img">
-        <div class="prodotto-info">
-          <h3>{{p.nome}}</h3>
-          <p>{{p.descrizione}}</p>
-          <p><strong>€{{p.prezzo}}</strong></p>
-          <button class="elimina-btn" (click)="eliminaProdotto(p.id)">ELIMINA</button>
+      <div class="header-actions">
+        <div class="status-indicator">
+          <span class="status-dot online"></span>
+          <span class="status-text">Sistema Online</span>
+        </div>
+        <div class="time-info">
+          <div class="current-time">{{ getCurrentTime() }}</div>
+          <div class="current-date">{{ getCurrentDate() }}</div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="ordini-container">
-  <div *ngFor="let ordine of ordini" class="ordine-card" style="border: 2px solid #502314; margin-bottom: 10px; padding: 15px; border-radius: 10px; background: #fff;">
-    <h3 style="margin: 0;">Ordine #{{ ordine.id }} - Totale: {{ ordine.totale }}€</h3>
-    <p style="font-size: 18px; background: #f8f8f8; padding: 10px; color: #333;">
-      <strong>Dettagli:</strong> {{ ordine.dettagli }}
-    </p>
-    <button (click)="completaOrdine(ordine.id)" style="background: green; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
-      ✅ ORDINE COMPLETATO
-    </button>
-  </div>
-</div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="dashboard-grid">
+      <!-- Sezione Ordini -->
+      <section class="orders-section">
+        <div class="section-header">
+          <h2><i class="icon">📋</i> Ordini in Cucina</h2>
+          <div class="orders-count">
+            <span class="count">{{ ordini.length }}</span>
+            <span class="label">ordini attivi</span>
+          </div>
+        </div>
+
+        <div class="orders-list" *ngIf="ordini.length > 0; else noOrders">
+          <div *ngFor="let ordine of ordini" class="order-card">
+            <div class="order-header">
+              <div class="order-number">
+                <span class="label">Ordine</span>
+                <span class="number">#{{ ordine.id }}</span>
+              </div>
+              <div class="order-status">
+                <span class="status-badge" [class]="'status-' + ordine.stato.toLowerCase().replace(' ', '-')">
+                  {{ ordine.stato }}
+                </span>
+              </div>
+            </div>
+
+            <div class="order-details">
+              <div class="detail-row">
+                <span class="detail-label">Articoli:</span>
+                <span class="detail-value">{{ ordine.dettagli }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Totale:</span>
+                <span class="detail-value total">€{{ formattaPrezzo(ordine.totale) }}</span>
+              </div>
+            </div>
+
+            <div class="order-actions">
+              <button class="btn-complete" (click)="completaOrdine(ordine.id)">
+                <i class="icon">✅</i>
+                Completa Ordine
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noOrders>
+          <div class="empty-state">
+            <div class="empty-icon">🍽️</div>
+            <h3>Nessun ordine attivo</h3>
+            <p>Gli ordini appariranno qui quando i clienti effettueranno acquisti</p>
+          </div>
+        </ng-template>
+      </section>
+
+      <!-- Sezione Aggiungi Prodotto -->
+      <section class="add-product-section">
+        <div class="section-header">
+          <h2><i class="icon">➕</i> Nuovo Prodotto</h2>
+        </div>
+
+        <form class="product-form" (ngSubmit)="aggiungiProdotto()" #productForm="ngForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="nome">Nome Prodotto</label>
+              <input
+                id="nome"
+                [(ngModel)]="nuovoProdotto.nome"
+                name="nome"
+                type="text"
+                placeholder="Es: Big King"
+                required
+                class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label for="prezzo">Prezzo (€)</label>
+              <input
+                id="prezzo"
+                [(ngModel)]="nuovoProdotto.prezzo"
+                name="prezzo"
+                type="number"
+                min="1"
+                step="0.01"
+                placeholder="0.00"
+                required
+                class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label for="categoria">Categoria</label>
+              <select
+                id="categoria"
+                [(ngModel)]="nuovoProdotto.categoria"
+                name="categoria"
+                class="form-select"
+                required>
+                <option value="panini">🍔 Panini</option>
+                <option value="bevande">🥤 Bevande</option>
+                <option value="menu">🍽️ Menù</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="immagine">URL Immagine</label>
+              <input
+                id="immagine"
+                [(ngModel)]="nuovoProdotto.immagine"
+                name="immagine"
+                type="url"
+                placeholder="https://..."
+                class="form-input">
+            </div>
+
+            <div class="form-group full-width">
+              <label for="descrizione">Descrizione</label>
+              <textarea
+                id="descrizione"
+                [(ngModel)]="nuovoProdotto.descrizione"
+                name="descrizione"
+                placeholder="Descrivi gli ingredienti e le caratteristiche del prodotto..."
+                rows="3"
+                class="form-textarea">
+              </textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="!productForm.form.valid">
+              <i class="icon">💾</i>
+              Salva Prodotto
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Sezione Gestione Prodotti -->
+      <section class="products-section">
+        <div class="section-header">
+          <h2><i class="icon">📦</i> Gestione Prodotti</h2>
+          <div class="products-count">
+            <span class="count">{{ prodotti.length }}</span>
+            <span class="label">prodotti totali</span>
+          </div>
+        </div>
+
+        <!-- Tabs Categorie -->
+        <div class="category-tabs">
+          <button
+            [class.active]="categoriaSelezionata === 'tutti'"
+            (click)="categoriaSelezionata = 'tutti'"
+            class="tab-btn">
+            Tutti
+          </button>
+          <button
+            [class.active]="categoriaSelezionata === 'panini'"
+            (click)="categoriaSelezionata = 'panini'"
+            class="tab-btn">
+            🍔 Panini
+          </button>
+          <button
+            [class.active]="categoriaSelezionata === 'bevande'"
+            (click)="categoriaSelezionata = 'bevande'"
+            class="tab-btn">
+            🥤 Bevande
+          </button>
+          <button
+            [class.active]="categoriaSelezionata === 'menu'"
+            (click)="categoriaSelezionata = 'menu'"
+            class="tab-btn">
+            🍽️ Menù
+          </button>
+        </div>
+
+        <!-- Lista Prodotti -->
+        <div class="products-grid">
+          <div *ngFor="let prodotto of filtraProdotti()" class="product-card">
+            <div class="product-image">
+              <img [src]="prodotto.immagine || '/assets/placeholder.png'" [alt]="prodotto.nome" class="product-img">
+              <div class="product-category">
+                <span class="category-badge" [class]="'cat-' + prodotto.categoria">
+                  {{ prodotto.categoria === 'panini' ? '🍔' : prodotto.categoria === 'bevande' ? '🥤' : '🍽️' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="product-info">
+              <h3 class="product-name">{{ prodotto.nome }}</h3>
+              <p class="product-description">{{ prodotto.descrizione || 'Nessuna descrizione' }}</p>
+              <div class="product-price">
+                <span class="price">€{{ formattaPrezzo(prodotto.prezzo) }}</span>
+              </div>
+            </div>
+
+            <div class="product-actions">
+              <button class="btn-delete" (click)="eliminaProdotto(prodotto.id)">
+                <i class="icon">🗑️</i>
+                Elimina
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="filtraProdotti().length === 0" class="empty-state">
+          <div class="empty-icon">📦</div>
+          <h3>Nessun prodotto trovato</h3>
+          <p>Nella categoria selezionata non ci sono prodotti</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="footer-info">
+        <span>© 2026 Burger King Staff System</span>
+        <span>•</span>
+        <span>Version 2.1.0</span>
+      </div>
+      <div class="footer-actions">
+        <button class="btn-secondary">⚙️ Impostazioni</button>
+        <button class="btn-secondary">📊 Report</button>
+      </div>
+    </div>
+  </footer>
 </div>

@@ -78,14 +78,14 @@ class DatabaseWrapper:
         finally:
             conn.close()
             
-def elimina_ordine(self, ordine_id):
-    conn = sqlite3.connect(self.db_name)
-    cursor = conn.cursor()
-    try:
-        cursor.execute("DELETE FROM ordini WHERE id = ?", (ordine_id,))
-        conn.commit()
-    finally:
-        conn.close()
+    def elimina_ordine(self, ordine_id):
+        conn = sqlite3.connect(self.db_name)
+        cursor = conn.cursor()
+        try:
+            cursor.execute("DELETE FROM ordini WHERE id = ?", (ordine_id,))
+            conn.commit()
+        finally:
+            conn.close()
 
     def get_ordini(self):
         conn = sqlite3.connect(self.db_name)
