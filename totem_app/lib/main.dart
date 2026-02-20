@@ -950,7 +950,17 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
 
   Widget buildInfoPage() {
     return Container(
-      color: Color(0xFFF8F9FA),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFFF8F9FA),
+            Color(0xFFF1F3F4),
+            Color(0xFFE8F4F8),
+          ],
+        ),
+      ),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -1020,6 +1030,16 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
             ),
 
             _buildInfoSection(
+              '🍔 I Nostri Piatti',
+              'Scopri i nostri hamburger gourmet: dal classico con cheddar e bacon, al vegetariano con ingredienti biologici. Ogni panino è preparato al momento con ingredienti selezionati e di stagione.',
+            ),
+
+            _buildInfoSection(
+              '📋 Ordine e Organizzazione',
+              'Il nostro sistema di self-service garantisce ordine e organizzazione ottimali:\n\n• Ordinazione rapida e intuitiva tramite touchscreen\n• Gestione efficiente delle code e dei tempi di attesa\n• Sistema di notifiche per aggiornamenti sugli ordini\n• Organizzazione automatizzata della cucina\n• Tracciamento preciso di ogni ordine dalla richiesta alla consegna',
+            ),
+
+            _buildInfoSection(
               '📞 Contatti',
               '📍 Indirizzo: Via degli Studi, 6 - Milano\n📞 Telefono: +39 02 1234 5678\n📧 Email: info@hamburgeria-mitzov-mancuso.it\n🕒 Orari: Lun-Dom 11:00-23:00',
             ),
@@ -1027,6 +1047,16 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
             _buildInfoSection(
               '🤝 Collaborazioni',
               'Siamo sempre aperti a nuove collaborazioni! Se sei un fornitore, un influencer, o hai idee innovative per il nostro menu, contattaci.\n\nScrivici a: collaborazioni@hamburgeria-mitzov-mancuso.it',
+            ),
+
+            _buildInfoSection(
+              '🏆 Certificazioni e Qualità',
+              'La nostra hamburgeria è impegnata nel garantire la massima qualità e sicurezza alimentare. Siamo certificati HACCP e utilizziamo solo ingredienti freschi e tracciabili.\n\n• Certificazione HACCP per la sicurezza alimentare\n• Ingredienti biologici e di stagione\n• Controlli qualità giornalieri\n• Personale qualificato e formato\n• Impegno per la sostenibilità ambientale',
+            ),
+
+            _buildInfoSection(
+              '📖 La Nostra Storia',
+              'Fondata nel 2020 da Alessandro Mitzov e Alessio Mancuso, Hamburgeria rappresenta l\'unione di due passioni: quella per il cibo di qualità e quella per l\'innovazione nel servizio.\n\nInizialmente un piccolo progetto familiare, oggi siamo un punto di riferimento nel quartiere, grazie alla nostra dedizione alla tradizione culinaria italiana combinata con tecniche moderne di preparazione.',
             ),
 
             // Mappa
@@ -1113,6 +1143,51 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
   }
 
   Widget _buildInfoSection(String title, String content) {
+    return SizedBox(
+      height: 180,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF502314),
+              ),
+            ),
+            SizedBox(height: 8),
+            Expanded(
+              child: Text(
+                content,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                  height: 1.6,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoSectionWithImage(String title, String content, String imageUrl) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       padding: EdgeInsets.all(20),
@@ -1138,13 +1213,51 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
               color: Color(0xFF502314),
             ),
           ),
-          Text(
-            content,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[700],
-              height: 1.6,
-            ),
+          SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Testo a sinistra (60% larghezza)
+              Expanded(
+                flex: 3,
+                child: Text(
+                  content,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[700],
+                    height: 1.6,
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+              // Immagine a destra (40% larghezza)
+              Expanded(
+                flex: 2,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: AspectRatio(
+                    aspectRatio: 4 / 3, // Proporzione 4:3 per immagini non strette
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.image,
+                            color: Colors.grey[500],
+                            size: 32,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

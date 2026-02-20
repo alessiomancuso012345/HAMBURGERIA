@@ -80,11 +80,28 @@
 
 body {
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, #f1f3f4 100%);
+  background: linear-gradient(135deg, #f5f5dc 0%, #f1f3f4 25%, #e8f4f8 50%, #f0f8e8 75%, #fefefe 100%);
+  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(214, 35, 8, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(250, 175, 24, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(80, 35, 20, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .app-container {
@@ -946,9 +963,31 @@ section:hover {
   box-shadow: var(--shadow-light);
 }
 
-.map-container iframe {
+.info-with-image {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.info-text {
+  flex: 1;
+}
+
+.info-image {
+  flex: 0 0 300px;
+}
+
+.info-image img {
   width: 100%;
-  border: none;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: var(--shadow-medium);
+  transition: var(--transition);
+}
+
+.info-image img:hover {
+  transform: scale(1.02);
 }
 
 /* Focus States */
