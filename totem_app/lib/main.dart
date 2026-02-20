@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:html' as html;
 
 void main() => runApp(MaterialApp(home: TotemBK(), debugShowCheckedModeBanner: false));
 
@@ -144,7 +145,7 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         backgroundColor: Color(0xFFF8F9FA),
         appBar: PreferredSize(
@@ -340,6 +341,16 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
                             ],
                           ),
                         ),
+                        Tab(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('ℹ️', style: TextStyle(fontSize: 16)),
+                              SizedBox(width: 6),
+                              Text('Info'),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -398,6 +409,7 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
                     buildProductGrid('panini'),
                     buildProductGrid('bevande'),
                     buildProductGrid('menu'),
+                    buildInfoPage(),
                   ],
                 ),
               ),
@@ -932,6 +944,209 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget buildInfoPage() {
+    return Container(
+      color: Color(0xFFF8F9FA),
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFFD62308), Color(0xFF502314)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text('🏢', style: TextStyle(fontSize: 24)),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Hamburgeria di Mitzov e Mancuso',
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 20,
+                            color: Colors.white,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                        Text(
+                          'Informazioni & Contatti',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white.withOpacity(0.9),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 24),
+
+            // Sezioni informative
+            _buildInfoSection(
+              '🏢 Chi Siamo',
+              'Benvenuti nella Hamburgeria di Mitzov e Mancuso, un luogo dove la tradizione culinaria italiana si fonde con l\'innovazione moderna. Offriamo hamburger gourmet preparati con ingredienti freschi e di qualità, in un ambiente accogliente e familiare.\n\nLa nostra passione per il cibo eccellente e il servizio clienti ci ha permesso di diventare un punto di riferimento nel quartiere, servendo clienti soddisfatti con creatività e dedizione.',
+            ),
+
+            _buildInfoSection(
+              '📞 Contatti',
+              '📍 Indirizzo: Via degli Studi, 6 - Milano\n📞 Telefono: +39 02 1234 5678\n📧 Email: info@hamburgeria-mitzov-mancuso.it\n🕒 Orari: Lun-Dom 11:00-23:00',
+            ),
+
+            _buildInfoSection(
+              '🤝 Collaborazioni',
+              'Siamo sempre aperti a nuove collaborazioni! Se sei un fornitore, un influencer, o hai idee innovative per il nostro menu, contattaci.\n\nScrivici a: collaborazioni@hamburgeria-mitzov-mancuso.it',
+            ),
+
+            // Mappa
+            Container(
+              margin: EdgeInsets.only(top: 24),
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '📍 Dove Trovarci',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF502314),
+                    ),
+                  ),
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey[300]!),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.map,
+                            size: 48,
+                            color: Colors.grey[500],
+                          ),
+                          SizedBox(height: 12),
+                          Text(
+                            'Mappa interattiva',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              // Apri la mappa in una nuova finestra
+                              html.window.open(
+                                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1398.0888470285904!2d9.19095307986999!3d45.50650146196819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786c0ce056761b9%3A0xc227b63bef9aef37!2sIIS%20Luigi%20Galvani!5e0!3m2!1sit!2sit!4v1771599270840!5m2!1sit!2sit',
+                                '_blank',
+                              );
+                            },
+                            icon: Icon(Icons.open_in_new, size: 16),
+                            label: Text('Apri Mappa'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFD62308),
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoSection(String title, String content) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF502314),
+            ),
+          ),
+          Text(
+            content,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[700],
+              height: 1.6,
+            ),
+          ),
+        ],
       ),
     );
   }
