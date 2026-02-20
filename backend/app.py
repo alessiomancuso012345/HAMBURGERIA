@@ -20,7 +20,7 @@ def after_request(response):
 
 @app.route('/')
 def home():
-    return "Il Backend di Burger King è ONLINE! (Supporto Descrizioni Attivo)"
+    return "Il Backend di Hamburgeria di Mitzov e Mancuso è ONLINE! (Supporto Descrizioni Attivo)"
 
 # --- ROTTA PRODOTTI ---
 @app.route('/prodotti', methods=['GET', 'POST', 'OPTIONS'])

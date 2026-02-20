@@ -189,7 +189,7 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "BURGER KING",
+                                  "HAMBURGERIA DI MITZOV E MANCUSO",
                                   style: GoogleFonts.bebasNeue(
                                     fontSize: 20,
                                     color: Color(0xFFFA9F18),
@@ -674,7 +674,7 @@ class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
               Row(
                 children: [
                   Text(
-                    "© 2026 Burger King Self-Service",
+                    "© 2026 Hamburgeria di Mitzov e Mancuso Self-Service",
                     style: TextStyle(
                       color: Color(0xFFFA9F18),
                       fontSize: 12,
