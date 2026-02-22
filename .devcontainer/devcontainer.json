@@ -18,5 +18,17 @@
   "postCreateCommand": "sudo apt-get update && sudo apt-get install -y git curl unzip xz-utils zip python3 python3-pip python-is-python3 && npm install -g @angular/cli && git clone https://github.com/flutter/flutter.git -b stable --depth 1 /home/vscode/flutter && echo 'export PATH=/home/vscode/flutter/bin:$PATH' >> ~/.bashrc",
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/home/vscode/flutter/bin"
+  },
+  "portsAttributes": {
+    "5000": {
+      "label": "Backend",
+      "cors": true
+    },
+    "8080": {
+      "label": "Flutter"
+    },
+    "4200": {
+      "label": "Angular"
+    }
   }
 }

@@ -1,11 +1,7 @@
 from flask import Flask, request, jsonify, make_response
-from flask_cors import CORS
 from database import DatabaseWrapper
 
 app = Flask(__name__)
-
-# Configurazione CORS super permissiva per GitHub Codespaces
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Inizializzazione del wrapper del database
 db = DatabaseWrapper()
@@ -13,7 +9,7 @@ db = DatabaseWrapper()
 # Header di sicurezza e CORS per ogni risposta
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'https://obscure-waddle-wrqw459w9g6r3vjq4-8080.app.github.dev')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
@@ -27,7 +23,11 @@ def home():
 @app.route('/prodotti/<int:id_prodotto>', methods=['DELETE', 'OPTIONS'])
 def gestisci_prodotti(id_prodotto=None):
     if request.method == 'OPTIONS':
-        return make_response({}, 200)
+        response = make_response({}, 200)
+        response.headers.add('Access-Control-Allow-Origin', 'https://obscure-waddle-wrqw459w9g6r3vjq4-8080.app.github.dev')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        return response
         
     if request.method == 'POST':
         try:
@@ -74,7 +74,11 @@ def gestisci_prodotti(id_prodotto=None):
 @app.route('/ordini', methods=['GET', 'POST', 'OPTIONS'])
 def gestisci_ordini():
     if request.method == 'OPTIONS':
-        return make_response({}, 200)
+        response = make_response({}, 200)
+        response.headers.add('Access-Control-Allow-Origin', 'https://obscure-waddle-wrqw459w9g6r3vjq4-8080.app.github.dev')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        return response
 
     if request.method == 'POST':
         try:
