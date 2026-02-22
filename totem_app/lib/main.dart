@@ -14,7 +14,7 @@ class TotemBK extends StatefulWidget {
 class _TotemBKState extends State<TotemBK> with TickerProviderStateMixin {
   List prodotti = [];
   List<Map<String, dynamic>> carrello = [];
-  final String apiUrl = "https://organic-rotary-phone-pjv5vvrwjjjg3764w-5000.app.github.dev/prodotti";
+  final String apiUrl = "https://${html.window.location.host.replaceAll('8080', '5000')}/prodotti";
   late AnimationController _fabAnimationController;
   late Animation<double> _fabAnimation;
 
